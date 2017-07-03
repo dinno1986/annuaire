@@ -19,11 +19,12 @@ try
  $datenaissance=$_POST['datenaissance'];
  $adresse=$_POST['adresse'];
  $telephone=$_POST['telephone'];
+ $groupe=$_POST['groupe'];
  
 //  echo '<p>Nom= ' . $nom.' '.'Prenom'.' '. $prenom.' '.'Entreprise'.' '.$entreprise.' '.'Date de naisance'.' '.$datenaissance.' '.'Adresse'.' '.$adresse;
 // // 	}
 // enregistre dans la base de donnée
-	if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['entreprise']) && !empty($_POST['datenaissance']) && !empty($_POST[adresse]) &&!empty($_POST['telephone'])) 
+	if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['entreprise']) && !empty($_POST['datenaissance']) && !empty($_POST['adresse']) &&!empty($_POST['telephone'] &&!empty($_POST['groupe'])))
 	{
 			$req = $bdd->prepare('INSERT INTO contact(nom, prenom, entreprise, datenaissance, adresse, telephone ) VALUES(:nom, :prenom, :entreprise, :datenaissance, :adresse, :telephone)');
 			$req->execute(array(
@@ -33,8 +34,13 @@ try
 			    'datenaissance' => $datenaissance,
 			    'adresse' => $adresse,
 			    'telephone' =>$telephone,
-			    
 			    ));
+
+			$grpe= $bdd ->prepare('INSERT INTO groupe(groupe)
+				VALUES(:groupe)');
+			$grpe->execute(array(
+				'groupe' => $groupe
+				));
 	}
 	else{
 		echo "erreur!!";
@@ -45,7 +51,8 @@ try
 
 
 //afficher la base de donnée
-$reponse = $bdd->query('SELECT * FROM contact');
+$reponse = $bdd->query('SELECT contact.id, contact.nom, contact.prenom, contact.entreprise, contact.datenaissance, contact.adresse, contact.telephone  FROM contact;');
+
 
 ?>
 
@@ -69,11 +76,33 @@ $reponse = $bdd->query('SELECT * FROM contact');
 	</thead>
 	<tbody>
 <?php
-while ($donnees =$reponse ->fetch()){
+
+
+	while ($donnees = $reponse->fetch()){
+
+
+		echo'<tr><td>'.$donnees['nom'].'</td><td>'.' '.$donnees['prenom'].'</td><td>'.' '.$donnees['entreprise'].'</td><td>'.' '.$donnees['datenaissance'].'</td><td>'.' '.$donnees['adresse'].'</td><td>'.' '.$donnees['telephone'].'</td><td>';
+
+
+		$sql = '
+			SELECT *
+			FROM groupe
+				JOIN appartenir ON groupe.id = appartenir.fk_groupe
+			WHERE appartenir.fk_user = ' . $donnees['id'];
 	
-			echo'<tr><td>'.$donnees['nom'].'</td><td>'.' '.$donnees['prenom'].'</td><td>'.' '.$donnees['entreprise'].'</td><td>'.' '.$donnees['datenaissance'].'</td><td>'.' '.$donnees['adresse'].'</td><td>'.' '.$donnees['telephone'].'</td><td>'.' '.$donnees['groupe'].'</td><td><button>Modifier</button></td>'.'<td><button>Supprimer</button></td></tr>';
-			
-		}	
+		$grpe = $bdd->query($sql);
+
+		while ($user = $grpe->fetch()){
+			echo $user['groupe'] . '<br/>';
+		}
+
+
+		echo '</td><td><button>Modifier</button></td>'.'<td><button>Supprimer</button></td></tr>';
+		
+	}	
+
+
+
 ?>
 </tbody>
 </table>
