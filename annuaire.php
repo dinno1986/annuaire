@@ -1,19 +1,18 @@
 <?php
-
-
 //se connecter a mysql
 try  
 	 {
 	     $bdd = new PDO('mysql:host=localhost;dbname=annuaire;charset=utf8', 'annuaire', '2rqaf7aZ67yenkQY');
 	 }
-	// // en cas d'erreur on affiche un message :
+	// // en cas d'erreur on affiche un message :
 	catch (Exception $e)
 	 {
 	        die('Erreur : ' . $e->getMessage());
 	 }
 
-//afficher la base de donnée
-$reponse = $bdd->query('SELECT * FROM contact');
+
+
+// Enregistrer dans la base de données
  $nom=$_POST['nom'];
  $prenom=$_POST['prenom'];
  $entreprise=$_POST['entreprise'];
@@ -21,11 +20,8 @@ $reponse = $bdd->query('SELECT * FROM contact');
  $adresse=$_POST['adresse'];
  $telephone=$_POST['telephone'];
  
-
 //  echo '<p>Nom= ' . $nom.' '.'Prenom'.' '. $prenom.' '.'Entreprise'.' '.$entreprise.' '.'Date de naisance'.' '.$datenaissance.' '.'Adresse'.' '.$adresse;
 // // 	}
-
-
 // enregistre dans la base de donnée
 	if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['entreprise']) && !empty($_POST['datenaissance']) && !empty($_POST[adresse]) &&!empty($_POST['telephone'])) 
 	{
@@ -40,10 +36,17 @@ $reponse = $bdd->query('SELECT * FROM contact');
 			    
 			    ));
 	}
-
 	else{
 		echo "erreur!!";
 	}
+
+
+
+
+
+//afficher la base de donnée
+$reponse = $bdd->query('SELECT * FROM contact');
+
 ?>
 
 <!DOCTYPE html>
@@ -61,16 +64,16 @@ $reponse = $bdd->query('SELECT * FROM contact');
 			<th>Date de naissance</th>
 			<th>Adresse</th>
 			<th>Téléphone</th>
+			<th>Groupe</th>
 		</tr>
 	</thead>
 	<tbody>
 <?php
 while ($donnees =$reponse ->fetch()){
 	
-			echo'<tr><td>'.$donnees['nom'].'</td><td>'.' '.$donnees['prenom'].'</td><td>'.' '.$donnees['entreprise'].'</td><td>'.' '.$donnees['datenaissance'].'</td><td>'.' '.$donnees['adresse'].'</td><td>'.' '.$donnees['telephone'].'</td><td><button>Modifier</button></td>'.'<td><button>Supprimer</button></td></tr>';
+			echo'<tr><td>'.$donnees['nom'].'</td><td>'.' '.$donnees['prenom'].'</td><td>'.' '.$donnees['entreprise'].'</td><td>'.' '.$donnees['datenaissance'].'</td><td>'.' '.$donnees['adresse'].'</td><td>'.' '.$donnees['telephone'].'</td><td>'.' '.$donnees['groupe'].'</td><td><button>Modifier</button></td>'.'<td><button>Supprimer</button></td></tr>';
 			
 		}	
-
 ?>
 </tbody>
 </table>
