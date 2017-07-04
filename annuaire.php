@@ -51,7 +51,7 @@ try
 
 
 //afficher la base de donnée
-$reponse = $bdd->query('SELECT contact.id, contact.nom, contact.prenom, contact.entreprise, contact.datenaissance, contact.adresse, contact.telephone  FROM contact;');
+$reponse = $bdd->query('SELECT *  FROM contact;');
 
 
 ?>
@@ -97,11 +97,26 @@ $reponse = $bdd->query('SELECT contact.id, contact.nom, contact.prenom, contact.
 		}
 
 
-		echo '</td><td><button>Modifier</button></td>'.'<td><button>Supprimer</button></td></tr>';
 		
+		
+		// echo '</td><td><button>Modifier</button></td>'.'<td><button>Supprimer</button></td></tr>';
+
+		echo '</td><td>
+		<form action="" method="post">
+   	    <input type="HIDDEN" name="id" value="'.$donnees['id'].'"/>
+   	    <input type="submit" value="Supprimer">   	   
+		</form>
+		</td></tr>';
+
 	}	
+		$id=$_POST["id"];
+		$test="DELETE FROM contact WHERE id = $id";
+	 	$bdd->exec($test)
 
-
+		 	// echo "yop";
+		 	// }else{
+		 	// 	echo "nop";
+		 	// } 
 
 ?>
 </tbody>
